@@ -8,87 +8,30 @@
 
 import UIKit
 
-class TableViewController: UITableViewController, NSXMLParserDelegate {
+class TableViewController: UITableViewController, UITableViewDataSource, UITableViewDelegate, NSXMLParserDelegate {
    
-   var parser = NSXMLParser()
-   var feeds = NSMutableArray()
-   var elements = NSMutableDictionary()
-   var element = NSString()
-   var ftitle = NSMutableString()
-   var link = NSMutableString()
-   var fdescription = NSMutableString()
+   var myFeed : NSArray = []
+   var url: NSURL = NSURL()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
          self.tableView.rowHeight = 70
-         feeds = []
-      var url: NSURL = NSURL(string: "http://www.theprospect.net/feed")!
-         parser = NSXMLParser(contentsOfURL: url)!
-         parser.delegate = self
-         parser.shouldProcessNamespaces = false
-         parser.shouldReportNamespacePrefixes = false
-         parser.shouldResolveExternalEntities = false
-         parser.parse()
+         self.tableView.dataSource = self
+         self.tableView.delegate = self
+      
+      url = NSURL(string: "http://www.theprospect.net/feed/")!
+      loadRss(url);
       
     }
    
-   func parser(parser: NSXMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [NSObject : AnyObject]) {
+   func loadRss(data: NSURL) {
+      var myParser : XmlParser = XmlParser.alloc().initWithUrl(data) as! XmlParser
       
-      element = elementName
+      // putting feed in array
+      myFeed = myParser.feeds
       
-      // naming all the elements
-      if (element as NSString).isEqualToString("item") {
-         elements = NSMutableDictionary.alloc()
-         elements = [:]
-         ftitle = NSMutableString.alloc()
-         ftitle = ""
-         link = NSMutableString.alloc()
-         link = ""
-         fdescription = NSMutableString.alloc()
-         fdescription = ""
-      }
-      
-   }
-   
-   func parser(parser: NSXMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
-      
-      // processing all the elements
-      
-      if (elementName as NSString).isEqualToString("item") {
-         if ftitle != "" {
-            elements.setObject(ftitle, forKey: "title")
-         }
-         
-         if link != "" {
-            elements.setObject(link, forKey: "link")
-         }
-         
-         if fdescription != "" {
-            elements.setObject(description, forKey: "description")
-         }
-         
-         feeds.addObject(elements)
-      }
-      
-   }
-   
-   func parser(parser: NSXMLParser, foundCharacters string: String?) {
-   
-      // constructing the table
-      
-      if element.isEqualToString("title") {
-         ftitle.appendString(string!)
-      }
-      
-      else if element.isEqualToString("link") {
-         link.appendString(string!)
-      }
-      
-      else if element.isEqualToString("description") {
-         fdescription.appendString(string!)
-      }
-      
+      tableView.reloadData()
    }
    
    func parserDidEndDocument(parser: NSXMLParser) {
@@ -99,7 +42,7 @@ class TableViewController: UITableViewController, NSXMLParserDelegate {
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        // disposing of any resources that can be recreated.
     }
 
     // MARK: - Table view data source
@@ -113,16 +56,27 @@ class TableViewController: UITableViewController, NSXMLParserDelegate {
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // #warning Incomplete method implementation.
         // Return the number of rows in the section.
-        return feeds.count
+        return myFeed.count
     }
 
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath: indexPath) as! UITableViewCell
 
-        cell.textLabel?.text = (feeds.objectAtIndex(indexPath.row).objectForKey("title") as! String)
+        cell.textLabel?.text = (myFeed.objectAtIndex(indexPath.row).objectForKey("title") as! String)
         cell.detailTextLabel?.numberOfLines = 3
-        cell.detailTextLabel?.text = (feeds.objectAtIndex(indexPath.row).objectForKey("description") as! String)
+        cell.detailTextLabel?.text = "by " + (myFeed.objectAtIndex(indexPath.row).objectForKey("dc:creator") as! String)
         return cell
     }
+   
+   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) {
+      if segue.identifier == "ViewPost" {
+         if let destinationVC = segue.destinationViewController as? PageViewController {
+            let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
+            destinationVC.selectedFeedTitle = (myFeed.objectAtIndex(indexPath!.row).objectForKey("title") as! String)
+            destinationVC.selectedFeedAuthor = (myFeed.objectAtIndex(indexPath!.row).objectForKey("dc:creator") as! String)
+            destinationVC.selectedFeedContent = (myFeed.objectAtIndex(indexPath!.row).objectForKey("content:encoded") as! String)
+         }
+      }
+   }
 
 }
