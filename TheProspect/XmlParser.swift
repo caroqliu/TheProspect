@@ -55,8 +55,6 @@ class XmlParser: NSObject, NSXMLParserDelegate {
             fdescription = ""
             fauthor = NSMutableString.alloc()
             fauthor = ""
-            fcontent = NSMutableString.alloc()
-            fcontent = ""
         }
         
     }
@@ -82,9 +80,6 @@ class XmlParser: NSObject, NSXMLParserDelegate {
                 elements.setObject(fauthor, forKey: "dc:creator")
             }
             
-            if fcontent != "" {
-                elements.setObject(fcontent, forKey: "content:encoded")
-            }
             
             feeds.addObject(elements)
         }
@@ -111,10 +106,6 @@ class XmlParser: NSObject, NSXMLParserDelegate {
             fauthor.appendString(string!)
         }
         
-        else if element.isEqualToString("content:encoded") {
-            let str = string!.stringByReplacingOccurrencesOfString("<[^>]+>", withString: "", options: .RegularExpressionSearch, range: nil)
-            fcontent.appendString(str)
-        }
         
     }
 

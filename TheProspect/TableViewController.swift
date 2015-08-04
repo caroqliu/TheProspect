@@ -74,7 +74,7 @@ class TableViewController: UITableViewController, UITableViewDataSource, UITable
             let indexPath = self.tableView.indexPathForCell(sender as! UITableViewCell)
             destinationVC.selectedFeedTitle = (myFeed.objectAtIndex(indexPath!.row).objectForKey("title") as! String)
             destinationVC.selectedFeedAuthor = (myFeed.objectAtIndex(indexPath!.row).objectForKey("dc:creator") as! String)
-            destinationVC.selectedFeedContent = (myFeed.objectAtIndex(indexPath!.row).objectForKey("content:encoded") as! String)
+            destinationVC.selectedFeedURL = (myFeed.objectAtIndex(indexPath!.row).objectForKey("link") as! String)
          }
       }
    }

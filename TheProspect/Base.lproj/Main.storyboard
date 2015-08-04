@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7706" systemVersion="14E46" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" initialViewController="G3y-Zq-Q65">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7703"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--LATEST POSTS-->
@@ -12,6 +13,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="sectionIndexColor" red="0.28235294119999998" green="0.41568627450000001" blue="0.54901960780000003" alpha="1" colorSpace="calibratedRGB"/>
                         <prototypes>
                             <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="Cell" textLabel="TcD-yH-z4F" detailTextLabel="iDC-zh-pfe" style="IBUITableViewCellStyleSubtitle" id="yp2-cg-ox3">
                                 <autoresizingMask key="autoresizingMask"/>
@@ -60,37 +62,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tmh-hU-3DO">
-                                <rect key="frame" x="0.0" y="64" width="320" height="176"/>
-                            </imageView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pZD-M8-q3F">
-                                <rect key="frame" x="0.0" y="239" width="320" height="329"/>
+                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="635-St-cwU">
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                            </textView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="by FirstName LastName" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bCk-iA-wup">
-                                <rect key="frame" x="4" y="208" width="186" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="This is the title of the article" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yMj-ZJ-CgH">
-                                <rect key="frame" x="4" y="179" width="211" height="21"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
+                            </webView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="trailingMargin" secondItem="635-St-cwU" secondAttribute="trailing" constant="-16" id="Ihk-ge-IiW"/>
+                            <constraint firstItem="Nio-KW-Xc2" firstAttribute="top" secondItem="635-St-cwU" secondAttribute="bottom" id="Q4X-lt-frp"/>
+                            <constraint firstItem="635-St-cwU" firstAttribute="top" secondItem="wU9-wO-YRw" secondAttribute="bottom" id="dwc-Ts-Ico"/>
+                            <constraint firstItem="635-St-cwU" firstAttribute="leading" secondItem="tuE-N4-JwU" secondAttribute="leadingMargin" constant="-16" id="ydL-4F-AUM"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="ODX-18-k11"/>
                     <connections>
-                        <outlet property="articleTitle" destination="yMj-ZJ-CgH" id="gkY-q8-Sda"/>
-                        <outlet property="author" destination="bCk-iA-wup" id="LCo-0d-W6S"/>
-                        <outlet property="content" destination="pZD-M8-q3F" id="iik-vG-cPP"/>
-                        <outlet property="image" destination="tmh-hU-3DO" id="d8f-Fp-4pQ"/>
+                        <outlet property="content" destination="635-St-cwU" id="xY5-5B-jzd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="fly-xE-uLQ" userLabel="First Responder" sceneMemberID="firstResponder"/>

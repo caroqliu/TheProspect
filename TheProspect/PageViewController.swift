@@ -10,10 +10,7 @@ import UIKit
 
 class PageViewController: UIViewController {
     
-    @IBOutlet var image: UIImageView!
-    @IBOutlet var articleTitle: UILabel!
-    @IBOutlet var author: UILabel!
-    @IBOutlet var content: UITextView!
+    @IBOutlet var content: UIWebView!
     
     var feedURL = ""
     var selectedFeedTitle = String()
@@ -25,24 +22,14 @@ class PageViewController: UIViewController {
         
         super.viewDidLoad()
         
-        self.articleTitle!.text = selectedFeedTitle;
-        self.author!.text = "by " + selectedFeedAuthor;
-        
-        let encodedData = selectedFeedContent.dataUsingEncoding(NSUTF8StringEncoding)!
-        let attributedOptions : [String: AnyObject] = [
-            NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType,
-            NSCharacterEncodingDocumentAttribute: NSUTF8StringEncoding
-        ]
-        let attributedString = NSAttributedString(data: encodedData, options: attributedOptions, documentAttributes: nil, error: nil)!
-        
-        self.content!.text = attributedString.string
-
-        // myWebView.loadRequest(NSURLRequest(URL: NSURL(string: feedURL)!))
+        let urlStr = selectedFeedURL.stringByAddingPercentEscapesUsingEncoding(NSUTF8StringEncoding)
+        let url = NSURL(string:urlStr!)
+        let request = NSURLRequest(URL:url!);
+        content.loadRequest(request);
         
         // Do any additional setup after loading the view, typically from a nib.
-        // var feedContent:String! = "<h3>\(selectedFeedTitle)</h3>\(selectedFeedContent)"
-        // myWebView.loadHTMLString(feedContent, baseURL: nil)
     }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
